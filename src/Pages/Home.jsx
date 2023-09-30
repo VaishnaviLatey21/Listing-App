@@ -9,31 +9,33 @@ import GamesById from '../Components/GamesById';
 function Home() {
 
   const [gameList, setGameList] = useState();
-  const [gameListById, setGameListById] = useState();
+  const [gameListById, setGameListById] = useState([]);
 
   useEffect(() => {
     getGameList();
-    // getGameListById();
+    getGameListById(4);
   }, [])
 
   const getGameList = () => {
     Api.getGameList.then((resp) => {
       setGameList(resp.data.results);
-      setGameListById(resp.data.results)
+
     })
   }
 
-  // const getGameListById = (id) => {
-  //   Api.getGameListById(4).then((resp) => {
-  //     console.log("Game list by GenreId:", resp.daa.results)
-  //   })
-  // }
+  const getGameListById = (id) => {
+    Api.getGameListById(id).then((resp) => {
+      console.log("Game list by genreId:", resp.data.results);
+      setGameListById(resp.data.results)
+
+    })
+  }
 
 
   return (
     <div className='grid grid-cols-4 p-5'>
       <div className='h-full  hidden md:block'> 
-      <GenreList/> 
+      <GenreList genreId= {(genreId) => getGameListById(genreId)}/> 
       </div>
       <div className='col-span-4 md:col-span-3'> 
       {gameList?.length>0 ? 
